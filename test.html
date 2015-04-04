@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+
+    <h3>Knockout Example</h3>
+<div id="koTest">
+    <div data-bind="text: text"></div>
+    <div data-bind="react: { $: ToDoList, props: { todos: todos }}"></div>
+</div>
+
+
+<h3>React Example</h3>
+
+<div id="reactTest"></div>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.1/react.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+    <script src="ideas.es5.js"></script>
+    <script>
+        var vm = {
+            text: "some text",
+            todos: ko.observableArray([
+                "one","two","three"
+            ])
+        };
+        ko.applyBindings(vm, document.getElementById("koTest"));
+
+        setInterval(function () {
+            vm.todos.shift();
+            vm.todos.push("" + Math.random());
+        }, 100);
+
+
+        // react example
+
+        var reactList = ["one","two","three"];
+
+        var render = function (todos) {
+            React.render(
+                React.createElement(ToDoList, { todos: todos }),
+                document.getElementById("reactTest")
+            );
+        };
+
+        render(reactList);
+
+        setInterval(function () {
+            reactList.shift();
+            reactList.push("" + Math.random());
+            render(reactList);
+        }, 100);
+
+
+    </script>
+</body>
+</html>
